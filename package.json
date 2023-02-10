@@ -1,0 +1,26 @@
+{
+  "name": "cakepals",
+  "version": "1.0.0",
+  "description": "cake selling app API",
+  "main": "app.js",
+  "scripts": {
+    "test": "test",
+    "start": "node app.js",
+    "dev": "nodemon app.js",
+    "create-module": "mkdir src/$NAME; touch src/$NAME/$NAME.controller.js; touch src/$NAME/$NAME.middlewares.js; touch src/$NAME/$NAME.model.js; touch src/$NAME/$NAME.routes.js; touch src/$NAME/$NAME.service.js; touch src/$NAME/$NAME.spec.js; touch src/$NAME/$NAME.validations.js;"
+  },
+  "author": "Mohamed Bakr",
+  "license": "ISC",
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "cors": "^2.8.5",
+    "dotenv": "^16.0.3",
+    "express": "^4.18.2",
+    "jsonwebtoken": "^9.0.0",
+    "mysql2": "^3.1.2",
+    "sequelize": "^6.28.0"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.20"
+  }
+}
