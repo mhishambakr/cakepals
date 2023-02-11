@@ -22,3 +22,25 @@ exports.findUserByUsername = async ({username})=>{
         throw err;
     }
 }
+
+exports.findUserByID = async ({id})=>{
+    try {
+        let user = await User.findOne({
+            where: {
+                id
+            },
+            raw: true
+        });
+
+        if (!user) {
+            throw {
+                status: 404,
+                message: 'User not found',
+            }
+        }
+
+        return { user };
+    } catch (err) {
+        throw err;
+    }
+}
