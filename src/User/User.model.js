@@ -10,6 +10,10 @@ module.exports = (sequelize, Sequelize) => {
             allowNull: false,
             unique: true
         },
+        name: {
+            type: Sequelize.STRING,
+            allowNull: false,
+        },
         password: {
             type: Sequelize.STRING,
             allowNull: false,

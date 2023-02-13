@@ -1,4 +1,6 @@
-
+const jwt = require('jsonwebtoken');
+const { secret } = require('../../config/auth.config');
+const { findUser } = require('../User/User.service');
 
 
 exports.authMiddleware = async (req, res, next) => {
@@ -14,7 +16,7 @@ exports.authMiddleware = async (req, res, next) => {
 
         let decoded = await jwt.verify(token, secret)
 
-        let { user } = await findUserByID({ id: decoded.id });
+        let { user } = await findUser({ query: { id: decoded.id } });
 
         res.locals.user = user;
 

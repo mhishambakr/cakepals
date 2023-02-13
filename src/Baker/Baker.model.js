@@ -13,7 +13,7 @@ module.exports = (sequelize, Sequelize) => {
             type: Sequelize.FLOAT,
             allowNull: false,
         },
-        availableIn: {
+        rating: {
             type: Sequelize.INTEGER,
             allowNull: false,
             defaultValue: 0

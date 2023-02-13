@@ -12,8 +12,7 @@ module.exports = (sequelize, Sequelize) => {
         },
         price: {
             type: Sequelize.FLOAT,
-            allowNull: false,
-            unique: true
+            allowNull: false
         },
         prepTime: {
             type: Sequelize.INTEGER,

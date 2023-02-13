@@ -1,15 +1,22 @@
-const { findUserByUsername } = require("../User/User.service");
-const { register, validatePassword, login } = require("./Auth.service");
+const { createBaker } = require("../Baker/Baker.service");
+const { findUserByUsername, createUser } = require("../User/User.service");
+const { validatePassword, login } = require("./Auth.service");
 
 
 
 exports.register = async (req, res) => {
     try {
-        let data = await register(req.body);
+        let { username, password: userPass, email, long, lat } = req.body;
+
+        let { user } = await createUser({ username, userPass, email });
+
+        let { baker } = await createBaker({ userId: user.id, long, lat })
 
         res.status(200).json({
             message: 'User registered successfully',
-            data
+            data: {
+                
+            }
         })
     } catch (err) {
         res.status(err.status || 500).json({
@@ -21,7 +28,7 @@ exports.register = async (req, res) => {
 exports.login = async (req, res) => {
     try {
         let { username, password } = req.body;
-        
+
         let { user } = await findUserByUsername({ username })
 
         await validatePassword({ actualPassword: user.password, password })
@@ -30,7 +37,9 @@ exports.login = async (req, res) => {
 
         res.status(200).json({
             message: 'Logged in successfully',
-            data
+            data: {
+                ...data
+            }
         })
     } catch (err) {
         res.status(err.status || 500).json({

@@ -18,7 +18,7 @@ module.exports = (sequelize, Sequelize) => {
         rating: {
             type: Sequelize.INTEGER,
             allowNull: false,
-            defaultValue: 5
+            defaultValue: 0
         },
         deliveredAt: {
             type: Sequelize.DATE,
