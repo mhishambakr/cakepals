@@ -4,7 +4,7 @@ const { createProduct, updateProduct, getProducts } = require("./Product.service
 exports.addProduct = async (req, res) => {
     try {
         let { name, price, prepTime, CategoryId } = req.body;
-        let { id: BakerId } = res.locals.user;
+        let { id: BakerId } = res.locals.user.Baker;
 
         let { product } = await createProduct({ name, price, prepTime, BakerId, CategoryId });
 

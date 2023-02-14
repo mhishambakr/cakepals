@@ -1,37 +1,22 @@
-const { User } = require("..");
+const { User, Baker, Member } = require("..");
 const bcrypt = require("bcryptjs");
 const { Op } = require("sequelize");
 
-
-exports.findUserByUsername = async ({username})=>{
-    try {
-        let user = await User.findOne({
-            where: {
-                username
-            },
-            raw: true
-        });
-
-        if (!user) {
-            throw {
-                status: 404,
-                message: 'This username doesn\'t exist',
-            }
-        }
-
-        return { user };
-    } catch (err) {
-        throw err;
-    }
-}
-
-exports.findUser = async ({query})=>{
+exports.findUser = async ({ query }) => {
     try {
         let user = await User.findOne({
             where: {
                 ...query
             },
-            raw: true
+            include: [{
+                model: Member, 
+                required: false
+            }, {
+                model: Baker,
+                required: false
+            }],
+            raw: true,
+            nest: true
         });
 
         if (!user) {

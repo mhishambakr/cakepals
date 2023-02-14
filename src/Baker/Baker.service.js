@@ -1,6 +1,6 @@
 const { Op } = require("sequelize");
 const { Baker, User } = require("..");
-
+const bcrypt = require('bcryptjs')
 exports.getBaker = async ({ query }) => {
     try {
         let baker = await Baker.findOne({
@@ -14,7 +14,7 @@ exports.getBaker = async ({ query }) => {
             }],
             raw: true
         });
-        baker = {name: baker['User.name'], ...baker}
+        baker = { name: baker['User.name'], ...baker }
         delete baker['User.name'];
 
 
@@ -32,31 +32,42 @@ exports.getBaker = async ({ query }) => {
 }
 
 
-exports.createBaker = async ({ userId: UserId, long, lat }) => {
+exports.createBaker = async ({ name, username, email, userPass, long, lat }) => {
     try {
 
-        let [baker, created] = await Baker.findOrCreate({
+        let hashedPassword = bcrypt.hashSync(userPass, 8);
+
+        let [user, created] = await User.findOrCreate({
             where: {
                 [Op.or]: [
-                    { UserId }
+                    
+                    { username },
+                    { email }
                 ]
             },
             defaults: {
-                UserId,
-                long,
-                lat,
+                username,
+                password: hashedPassword,
+                email,
+                name,
+                Baker: {
+                    long,
+                    lat,
+                }
             },
+            include: [Baker],
+            raw: true
         });
 
         if (!created) {
             throw {
                 status: 409,
-                message: 'member with this username or email already exists',
+                message: 'Baker with this username or email already exists',
             }
         }
-        baker = baker.get({ plain: true })
+        user = user.get({ plain: true })
 
-        return { baker }
+        return { user }
     } catch (error) {
         console.log(error)
         throw error;

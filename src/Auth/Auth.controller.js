@@ -1,21 +1,19 @@
 const { createBaker } = require("../Baker/Baker.service");
-const { findUserByUsername, createUser } = require("../User/User.service");
+const { findUser } = require("../User/User.service");
 const { validatePassword, login } = require("./Auth.service");
 
 
 
 exports.register = async (req, res) => {
     try {
-        let { username, password: userPass, email, long, lat } = req.body;
+        let { name, username, password: userPass, email, long, lat } = req.body;
 
-        let { user } = await createUser({ username, userPass, email });
-
-        let { baker } = await createBaker({ userId: user.id, long, lat })
+        let { user } = await createBaker({ name, username, userPass, email , long, lat })
 
         res.status(200).json({
             message: 'User registered successfully',
             data: {
-                
+                user
             }
         })
     } catch (err) {
@@ -29,7 +27,7 @@ exports.login = async (req, res) => {
     try {
         let { username, password } = req.body;
 
-        let { user } = await findUserByUsername({ username })
+        let { user } = await findUser({ query: {username} })
 
         await validatePassword({ actualPassword: user.password, password })
 
