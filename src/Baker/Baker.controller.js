@@ -1,4 +1,4 @@
-const { getBaker } = require("./Baker.service");
+const { getBaker, calculateBakerRating } = require("./Baker.service");
 
 
 exports.getBakerDetails = async (req, res) => {
@@ -9,12 +9,18 @@ exports.getBakerDetails = async (req, res) => {
             id
         };
 
-        let baker = await getBaker({ query })
+        let [baker, rating] = await Promise.all([
+            getBaker({ query }),
+            calculateBakerRating({ BakerId: id })
+        ])
 
         res.status(200).json({
-            message: 'Product list fetched successfully.',
+            message: 'Baker details fetched successfully.',
             data: {
-                baker
+                baker: {
+                    ...baker,
+                    rating
+                },
             }
         })
     } catch (err) {

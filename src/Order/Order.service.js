@@ -4,7 +4,6 @@ const moment = require('moment');
 
 exports.getLatestBakerOrder = async ({ BakerId }) => {
     try {
-        console.log('here');
         let order = await Order.findOne({
             where: {
                 [Op.or]: [{ status: 'accepted' }, { status: 'pending' }],
