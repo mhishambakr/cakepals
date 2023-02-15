@@ -1,5 +1,6 @@
 const { createOrder, getLatestBakerOrder, estimateDelivery } = require("./Order.service");
 const { getProductDetails } = require("../Product/Product.service");
+const { updateBaker, incrementAvailablity } = require("../Baker/Baker.service");
 
 exports.makeOrder = async (req, res) => {
     try {
@@ -14,6 +15,8 @@ exports.makeOrder = async (req, res) => {
         let deliveredAt = estimateDelivery({ prepTime, availableIn })
 
         let data = await createOrder({ ProductId, paymentMethod, MemberId, deliveredAt })
+
+        await incrementAvailablity({BakerId, prepTime})
 
         res.status(200).json({
             message: 'Order created successfully.',

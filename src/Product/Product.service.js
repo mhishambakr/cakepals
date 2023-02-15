@@ -7,7 +7,9 @@ exports.getProductDetails = async ({ query }) => {
             where: {
                 ...query
             },
-            raw: true
+            include: [Baker],
+            raw: true,
+            nest: true
         });
 
 
@@ -35,7 +37,7 @@ exports.getProducts = async ({ query, limit, skip, long, lat }) => {
             attributes: ["id", "name", "price", "prepTime"],
             include: [{
                 model: Baker,
-                attributes: ['id', [Sequelize.literal("3959 * acos(cos(radians(" + lat + ")) * cos(radians(lat)) * cos(radians(`long`) - radians(" + long + ")) + sin(radians(" + lat + ")) * sin(radians(lat)))"), 'distance']],
+                attributes: ['id', [Sequelize.literal("3959 * acos(cos(radians(" + lat + ")) * cos(radians(lat)) * cos(radians(`long`) - radians(" + long + ")) + sin(radians(" + lat + ")) * sin(radians(lat)))"), 'distance'], 'availableIn'],
                 include: [{
                     model: User,
                     attributes: ['name']
@@ -45,7 +47,15 @@ exports.getProducts = async ({ query, limit, skip, long, lat }) => {
             nest: true
         })
 
-        products.rows = products.rows.filter((x) => x.Baker.distance < 5)
+        products.rows = products.rows.filter((prod) => prod.Baker.distance < 5).map(prod=>{
+            return{
+                ...prod,
+                Baker: {
+                    ...prod.Baker,
+                    availableIn: prod.Baker.availableIn + prod.prepTime
+                }
+            }
+        })
 
         return products;
     } catch (err) {

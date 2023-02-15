@@ -22,8 +22,8 @@ exports.getLatestBakerOrder = async ({ BakerId }) => {
             raw: true,
             nest: true
         })
-        console.log(order)
-        return order
+        if (!order) return { deliveredAt: new Date() }
+        return order 
     } catch (err) {
         throw err;
     }

@@ -1,5 +1,5 @@
 const express = require('express');
-const { sequelize, User, Token } = require('./src/index');
+const { sequelize } = require('./src/index');
 
 const app = express();
 

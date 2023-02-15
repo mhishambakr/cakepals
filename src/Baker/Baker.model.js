@@ -18,6 +18,11 @@ module.exports = (sequelize, Sequelize) => {
             allowNull: false,
             defaultValue: 0
         },
+        availableIn: {
+            type: Sequelize.INTEGER,
+            allowNull: false,
+            defaultValue: 0
+        },
         createdAt: {
             type: Sequelize.DATE,
             defaultValue: Sequelize.literal("CURRENT_TIMESTAMP")

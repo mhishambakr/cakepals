@@ -40,7 +40,7 @@ exports.createBaker = async ({ name, username, email, userPass, long, lat }) => 
         let [user, created] = await User.findOrCreate({
             where: {
                 [Op.or]: [
-                    
+
                     { username },
                     { email }
                 ]
@@ -77,7 +77,7 @@ exports.createBaker = async ({ name, username, email, userPass, long, lat }) => 
 
 exports.updateBaker = async ({ id, query }) => {
     try {
-        let product = await Product.update({
+        let baker = await Baker.update({
             ...query
 
         }, {
@@ -86,7 +86,17 @@ exports.updateBaker = async ({ id, query }) => {
             }
         })
 
-        return product
+        return baker
+    } catch (err) {
+        throw err;
+    }
+}
+
+exports.incrementAvailablity = async ({ BakerId, prepTime }) => {
+    try {
+        let availableIn = await Baker.increment('availableIn', { by: prepTime, where: { id: BakerId } });
+        
+        return availableIn;
     } catch (err) {
         throw err;
     }
