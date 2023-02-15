@@ -107,8 +107,6 @@ exports.updateProduct = async ({ prodId, query }) => {
             }
         }
 
-        console.log(product)
-
         return product
     } catch (err) {
         throw err;

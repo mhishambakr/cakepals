@@ -54,3 +54,24 @@ exports.createOrder = async ({ paymentMethod, ProductId, MemberId, deliveredAt }
         throw err;
     }
 }
+
+exports.updateOrder = async ({orderId, query})=>{
+    try {
+        let order = await Order.update({
+            ...query
+        }, {
+            where: {
+                id: orderId
+            }
+        })
+
+        if (order[0] != 1) {
+            throw {
+                status: 400,
+                message: "Error updating order"
+            }
+        }
+    } catch (err) {
+        throw err;
+    }
+}
