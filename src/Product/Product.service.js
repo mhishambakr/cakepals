@@ -1,6 +1,28 @@
 const { Op, Sequelize } = require("sequelize");
 const { Product, Baker, User } = require("..");
 
+exports.getProductDetails = async ({ query }) => {
+    try {
+        let product = await Product.findOne({
+            where: {
+                ...query
+            },
+            raw: true
+        });
+
+
+        if (!product) {
+            throw {
+                status: 404,
+                message: 'Profile not found'
+            }
+        }
+
+        return product
+    } catch (err) {
+        throw err;
+    }
+}
 
 exports.getProducts = async ({ query, limit, skip, long, lat }) => {
     try {

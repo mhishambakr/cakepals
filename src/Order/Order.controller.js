@@ -1,5 +1,5 @@
-const { createOrder } = require("./Order.service");
-const moment = require('moment');
+const { createOrder, getLatestBakerOrder, estimateDelivery } = require("./Order.service");
+const { getProductDetails } = require("../Product/Product.service");
 
 exports.makeOrder = async (req, res) => {
     try {
@@ -7,7 +7,11 @@ exports.makeOrder = async (req, res) => {
 
         let { id: MemberId } = res.locals.user.Member;
 
-        let deliveredAt = moment(new Date()).add(20, 'm').toDate().toISOString().slice(0, 19).replace('T', ' ');
+        let { prepTime, BakerId } = await getProductDetails({ query: { id: ProductId } });
+
+        let { deliveredAt: availableIn } = await getLatestBakerOrder({ BakerId })
+
+        let deliveredAt = estimateDelivery({ prepTime, availableIn })
 
         let data = await createOrder({ ProductId, paymentMethod, MemberId, deliveredAt })
 
