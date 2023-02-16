@@ -6,7 +6,7 @@ const { validatePassword, login } = require("./Auth.service");
 
 exports.register = async (req, res) => {
     try {
-        let { name, username, password: userPass, email, long, lat } = req.body;
+        let { name, username, password: userPass, email, coordinates: {long, lat} } = req.body;
 
         let { user } = await createBaker({ name, username, userPass, email , long, lat })
 

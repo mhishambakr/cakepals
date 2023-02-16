@@ -49,7 +49,6 @@ exports.getProductList = async (req, res) => {
     try {
         let { limit, skip, searchQuery, category, long, lat } = req.query;
 
-
         let query = {
             [Op.or]: [
                 { name: { [Op.like]: `%${searchQuery || ''}%` } },

@@ -1,6 +1,7 @@
 const jwt = require('jsonwebtoken');
 const { secret } = require('../../config/auth.config');
 const { findUser } = require('../User/User.service');
+const { registerSchema, loginSchema } = require('./Auth.validations');
 
 
 exports.authMiddleware = async (req, res, next) => {
@@ -19,6 +20,31 @@ exports.authMiddleware = async (req, res, next) => {
         let { user } = await findUser({ query: { id: decoded.id } });
 
         res.locals.user = user;
+
+        next();
+    } catch (error) {
+        res.status(error.status || 400).json({
+            message: error.message || 'Something went wrong',
+        })
+    }
+}
+
+exports.validateRegisteration = async (req, res, next) => {
+    try {
+        await registerSchema.validateAsync(req.body)
+
+        next();
+    } catch (error) {
+        res.status(error.status || 400).json({
+            message: error.message || 'Something went wrong',
+        })
+    }
+}
+
+
+exports.validateLogin = async (req, res, next) => {
+    try {
+        await loginSchema.validateAsync(req.body)
 
         next();
     } catch (error) {
