@@ -86,3 +86,14 @@ exports.incrementAvailablity = async ({ BakerId, prepTime }) => {
         throw err;
     }
 }
+
+
+exports.decrementAvailablity = async ({ BakerId, prepTime }) => {
+    try {
+        let availableIn = await Baker.decrement('availableIn', { by: prepTime, where: { id: BakerId } });
+        
+        return availableIn;
+    } catch (err) {
+        throw err;
+    }
+}

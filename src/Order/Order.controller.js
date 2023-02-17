@@ -1,6 +1,6 @@
-const { createOrder, getLatestBakerOrder, estimateDelivery, updateOrder } = require("./Order.service");
+const { createOrder, getLatestBakerOrder, estimateDelivery, updateOrder, getOrderDetails } = require("./Order.service");
 const { getProductDetails } = require("../Product/Product.service");
-const { updateBaker, incrementAvailablity } = require("../Baker/Baker.service");
+const { updateBaker, incrementAvailablity, decrementAvailablity } = require("../Baker/Baker.service");
 
 exports.makeOrder = async (req, res) => {
     try {
@@ -37,6 +37,12 @@ exports.updateOrder = async (req, res) => {
         let { orderId, query } = req.body;
 
         let data = await updateOrder({ orderId, query });
+
+        if (query.status == 'finished') {
+            let order = await getOrderDetails({orderId});
+
+            await decrementAvailablity({BakerId: order?.Product?.Baker?.id, prepTime: order?.Product?.prepTime})
+        }
 
         res.status(200).json({
             message: 'Order updated successfully.',

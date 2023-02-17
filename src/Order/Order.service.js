@@ -1,6 +1,36 @@
 const { Op } = require("sequelize");
-const { Order, Product } = require("..");
+const { Order, Product, Baker } = require("..");
 const moment = require('moment');
+
+exports.getOrderDetails = async ({orderId})=>{
+    try {
+        let order = await Order.findOne({
+            where: {
+                id: orderId
+            },
+            include: [{
+                model: Product,
+                include: [{
+                    model: Baker
+                }]
+            }],
+            raw: true,
+            nest: true
+        })
+
+
+        if (!order) {
+            throw {
+                status: 404,
+                message: 'Order not found'
+            }
+        }
+
+        return order
+    } catch (err) {
+        throw err;
+    }
+}
 
 exports.getLatestBakerOrder = async ({ BakerId }) => {
     try {
