@@ -5,6 +5,6 @@ const { validateBakerDetails } = require('./Baker.middlewares');
 
 const router = express.Router();
 
-router.get('/details', authMiddleware, validateBakerDetails, getBakerDetails);
+router.get('/details', validateBakerDetails, getBakerDetails);
 
 module.exports = router;

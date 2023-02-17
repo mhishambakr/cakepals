@@ -18,6 +18,10 @@ module.exports = (sequelize, Sequelize) => {
             type: Sequelize.STRING,
             allowNull: false,
         },
+        role: {
+            type: Sequelize.DataTypes.ENUM('member','baker'),
+            allowNull: false,
+        },
         email: {
             type: Sequelize.STRING,
             allowNull: false,

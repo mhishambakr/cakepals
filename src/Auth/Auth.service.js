@@ -26,7 +26,6 @@ exports.validatePassword = async ({ password, actualPassword }) => {
 
 exports.login = async ({userId})=>{
     try {
-        console.log(secret)
         var token = jwt.sign({ id: userId }, secret, {
             expiresIn: 86400
         });

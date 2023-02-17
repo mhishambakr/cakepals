@@ -9,7 +9,7 @@ exports.findUser = async ({ query }) => {
                 ...query
             },
             include: [{
-                model: Member, 
+                model: Member,
                 required: false
             }, {
                 model: Baker,
@@ -32,10 +32,10 @@ exports.findUser = async ({ query }) => {
     }
 }
 
-exports.createUser = async ({ username, userPass, email }) => {
+exports.createUser = async ({ name, username, email, password, role, coordinates }) => {
     try {
 
-        let hashedPassword = bcrypt.hashSync(userPass, 8);
+        let hashedPassword = bcrypt.hashSync(password, 8);
 
         let [user, created] = await User.findOrCreate({
             where: {
@@ -47,18 +47,27 @@ exports.createUser = async ({ username, userPass, email }) => {
             defaults: {
                 username,
                 password: hashedPassword,
-                email
+                email,
+                name,
+                Baker: role === 'baker' && {
+                    ...coordinates
+                },
+                Member: role === 'member' && {
+                    
+                }
             },
+            include: [role === 'baker' ? Baker: Member],
+            raw: true
         });
 
         if (!created) {
             throw {
                 status: 409,
-                message: 'member with this username or email already exists',
+                message: 'User with this username or email already exists',
             }
         }
         user = user.get({ plain: true })
-        delete user.password
+
         return { user }
     } catch (error) {
         console.log(error)
