@@ -11,7 +11,7 @@ exports.addProduct = async (req, res) => {
         res.status(200).json({
             message: 'Product added successfully',
             data: {
-
+                product
             }
         })
     } catch (err) {
@@ -26,9 +26,9 @@ exports.updateProduct = async (req, res) => {
     try {
         let { prodId, query } = req.body;
 
-        let { id: BakerId } = res.locals.user;
+        let { id: BakerId } = res.locals.user.Baker;
 
-        await updateProduct({ prodId, query })
+        await updateProduct({ prodId, BakerId, query })
 
         res.status(200).json({
             message: 'Product updated successfuly',
@@ -54,8 +54,8 @@ exports.getProductList = async (req, res) => {
                 { name: { [Op.like]: `%${searchQuery || ''}%` } },
             ]
         };
-        if (category) query['CategoryId'] = Number(category)
 
+        if (category) query['CategoryId'] = Number(category)
 
         let products = await getProducts({ query, limit, skip, long, lat })
 

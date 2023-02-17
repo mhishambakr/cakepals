@@ -89,14 +89,15 @@ exports.createProduct = async ({ name, price, prepTime, BakerId, CategoryId }) =
     }
 }
 
-exports.updateProduct = async ({ prodId, query }) => {
+exports.updateProduct = async ({ prodId, query, BakerId }) => {
     try {
         let product = await Product.update({
             ...query
 
         }, {
             where: {
-                id: prodId
+                id: prodId,
+                BakerId
             }
         })
 
