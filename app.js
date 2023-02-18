@@ -8,7 +8,6 @@ const port = process.env.PORT || 8000;
 var cors = require('cors');
 app.use(cors());
 
-
 sequelize.sync({ alter: false }).then().catch(err => console.log(err));
 
 const routesV1 = require('./src/routes.v1');
@@ -22,7 +21,6 @@ app.get('/', async (req, res) => {
 });
 
 routesV1(app, '/api');
-
 
 app.listen(port, () => {
     console.log(`App is listening on port ${port}!`);

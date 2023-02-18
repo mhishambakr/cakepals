@@ -3,7 +3,7 @@
 const joi = require('joi');
 
 exports.orderCreateSchema = joi.object({
-    name: joi.string().valid('cash on delivery', 'credit card').required(),
+    paymentMethod: joi.string().valid('cash on delivery', 'credit card').required(),
     ProductId: joi.number().integer().min(0).required(),
 })
 

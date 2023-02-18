@@ -7,19 +7,20 @@ exports.getBaker = async ({ query }) => {
             where: {
                 ...query
             },
-            attributes: ['rating'],
+            attributes: ['id'],
             include: [{
                 model: User,
                 attributes: ['name']
             },{
                 model: Product,
-                attributes: ['name', 'price']
+                as: 'Products',
+                attributes: ['id','name', 'price','BakerId'],
+                
             }],
-            raw: true,
-            nest: true
+            raw: false,
+            nest: true,
+            plain: false
         });
-        baker = { name: baker['User.name'], ...baker }
-        delete baker['User.name'];
 
 
         if (!baker) {
@@ -29,7 +30,7 @@ exports.getBaker = async ({ query }) => {
             }
         }
 
-        return baker
+        return baker[0]
     } catch (err) {
         throw err;
     }
@@ -52,13 +53,11 @@ exports.calculateBakerRating = async ({BakerId})=>{
             raw: true,
             nest: true
         })
-        return orders[0]?.avgRating
+        return orders[0]?.avgRating || 0
     } catch (err) {
         throw err;
     }
 }
-
-
 
 exports.updateBaker = async ({ id, query }) => {
     try {
@@ -86,7 +85,6 @@ exports.incrementAvailablity = async ({ BakerId, prepTime }) => {
         throw err;
     }
 }
-
 
 exports.decrementAvailablity = async ({ BakerId, prepTime }) => {
     try {

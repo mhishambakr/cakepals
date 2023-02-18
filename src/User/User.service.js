@@ -49,6 +49,7 @@ exports.createUser = async ({ name, username, email, password, role, coordinates
                 password: hashedPassword,
                 email,
                 name,
+                role,
                 Baker: role === 'baker' && {
                     ...coordinates
                 },

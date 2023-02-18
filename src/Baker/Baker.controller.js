@@ -17,10 +17,8 @@ exports.getBakerDetails = async (req, res) => {
         res.status(200).json({
             message: 'Baker details fetched successfully.',
             data: {
-                baker: {
-                    ...baker,
+                    baker,
                     rating
-                },
             }
         })
     } catch (err) {

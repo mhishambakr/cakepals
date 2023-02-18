@@ -6,7 +6,7 @@ exports.makeOrder = async (req, res) => {
     try {
         let { ProductId, paymentMethod } = req.body
 
-        let { id: MemberId } = res.locals.user.Member;
+        let MemberId = res?.locals?.user?.Member?.id;
 
         let { prepTime, BakerId } = await getProductDetails({ query: { id: ProductId } });
 

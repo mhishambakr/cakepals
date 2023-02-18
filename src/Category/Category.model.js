@@ -6,9 +6,8 @@ module.exports = (sequelize, Sequelize) => {
             primaryKey: true
         },
         name: {
-            type: Sequelize.DataTypes.ENUM('generic','meat pie', 'fruit cake', 'fish pie', 'chicken pie', 'sweet cake'),
+            type: Sequelize.STRING,
             allowNull: false,
-            defaultValue: 'generic'
         },
         createdAt: {
             type: Sequelize.DATE,
