@@ -114,11 +114,12 @@ exports.updateProduct = async ({ prodId, query, BakerId }) => {
     }
 }
 
-exports.deleteProduct = async ({ id }) => {
+exports.deleteProduct = async ({ id, BakerId }) => {
     try {
         let deleted = await Product.destroy({
             where: {
-                id
+                id,
+                BakerId
             }
         });
 
@@ -128,7 +129,7 @@ exports.deleteProduct = async ({ id }) => {
     }
 }
 
-exports.resotreProduct = async ({ id }) => {
+exports.resotreProduct = async ({ id, BakerId }) => {
     try {
         let product = await Product.findOne({
             where: {
@@ -141,6 +142,13 @@ exports.resotreProduct = async ({ id }) => {
             throw {
                 status: 404,
                 message: 'Product not found'
+            }
+        }
+
+        if (product.BakerId != BakerId){
+            throw {
+                status: 401,
+                message: 'You are not authorized to restore this product'
             }
         }
 

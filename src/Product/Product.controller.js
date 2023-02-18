@@ -1,5 +1,5 @@
 const { Op, Sequelize } = require("sequelize");
-const { createProduct, updateProduct, getProducts } = require("./Product.service");
+const { createProduct, updateProduct, getProducts, deleteProduct, resotreProduct, getProductDetails } = require("./Product.service");
 
 exports.addProduct = async (req, res) => {
     try {
@@ -65,6 +65,52 @@ exports.getProductList = async (req, res) => {
                 products
             }
         })
+    } catch (err) {
+        console.error(err);
+        res.status(err.status || 500).json({
+            message: err.message
+        })
+    }
+}
+
+exports.removeProduct = async (req,res)=>{
+    try {
+        let { id } = req.query;
+
+        let { id: BakerId } = res.locals.user.Baker;
+
+        await deleteProduct({ id, BakerId })
+
+        res.status(200).json({
+            message: 'Product removed successfuly',
+            data: {
+
+            }
+        })
+
+    } catch (err) {
+        console.error(err);
+        res.status(err.status || 500).json({
+            message: err.message
+        })
+    }
+}
+
+exports.restoreProduct = async (req,res)=>{
+    try {
+        let { id } = req.query;
+
+        let { id: BakerId } = res.locals.user.Baker;
+
+        await resotreProduct({ id, BakerId })
+
+        res.status(200).json({
+            message: 'Product restored successfuly',
+            data: {
+
+            }
+        })
+
     } catch (err) {
         console.error(err);
         res.status(err.status || 500).json({

@@ -32,3 +32,7 @@ exports.productUpdateSchema = joi.object({
         CategoryId: joi.number().integer().min(0),
     }).required().or('name', 'price', 'prepTime', 'CategoryId')
 })
+
+exports.productDeleteRestoreSchema = joi.object({
+    id: joi.number().integer().min(0).required(),
+})
