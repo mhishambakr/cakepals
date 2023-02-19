@@ -5,7 +5,7 @@ const { validateOrderCreate, validateOrderUpdate } = require('./Order.middleware
 
 const router = express.Router();
 
-router.post('/create', validateOrderCreate, makeOrder);
+router.post('/create', authMiddleware, validateOrderCreate, makeOrder);
 router.patch('/update', authMiddleware, validateOrderUpdate, updateOrder);
 
 module.exports = router;
